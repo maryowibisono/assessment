@@ -1,4 +1,4 @@
-package com.maryow.assessment.config;
+package com.maryow.assessment.common;
 
 public class Config {
     public static final int SPLASH_TIME_OUT = 1000;

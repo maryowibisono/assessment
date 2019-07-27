@@ -7,6 +7,7 @@ import android.os.Looper;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -19,8 +20,18 @@ import okhttp3.Response;
 public class OkHttpUtil {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public void get(String url, final OkHttpResponse okHttpResponse) {
-        OkHttpClient client = new OkHttpClient();
+    public void get(Context context, String url, final OkHttpResponse okHttpResponse) {
+        OkHttpClient client;
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .followRedirects(true)
+                .followSslRedirects(true)
+                .retryOnConnectionFailure(true)
+                .cache(null)
+                .connectTimeout(150, TimeUnit.SECONDS)
+                .writeTimeout(150, TimeUnit.SECONDS)
+                .readTimeout(150, TimeUnit.SECONDS);
+
+        client = builder.build();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -38,15 +49,24 @@ public class OkHttpUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull final Response response) throws IOException {
+
                 if (response.isSuccessful()) {
-                    try {
-                        okHttpResponse.response(true, response.body().string());
-                    } catch (Exception e) {
-                        okHttpResponse.response(false, e.getMessage());
-                    }
+                    final String responseString = response.body().string();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            okHttpResponse.response(true, responseString);
+                        }
+                    });
+
                 } else {
-                    okHttpResponse.response(false, response.message());
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            okHttpResponse.response(false, response.message());
+                        }
+                    });
                 }
             }
         });
@@ -54,7 +74,17 @@ public class OkHttpUtil {
     }
 
     public void post(String url, String param, final OkHttpResponse okHttpResponse) {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client;
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .followRedirects(true)
+                .followSslRedirects(true)
+                .retryOnConnectionFailure(true)
+                .cache(null)
+                .connectTimeout(150, TimeUnit.SECONDS)
+                .writeTimeout(150, TimeUnit.SECONDS)
+                .readTimeout(150, TimeUnit.SECONDS);
+
+        client = builder.build();
 
         RequestBody body = RequestBody.create(param, JSON);
         Request request = new Request.Builder()
@@ -75,20 +105,24 @@ public class OkHttpUtil {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull final Response response) throws IOException {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (response.isSuccessful()) {
-                            try {
-                                okHttpResponse.response(true, response.body().string());
-                            } catch (IOException e) {
-                                okHttpResponse.response(false, e.getMessage());
-                            }
-                        } else {
+
+                if (response.isSuccessful()) {
+                    final String responseString = response.body().string();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            okHttpResponse.response(true, responseString);
+                        }
+                    });
+
+                } else {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
                             okHttpResponse.response(false, response.message());
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }

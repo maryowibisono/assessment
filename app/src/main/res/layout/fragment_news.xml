@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.NewsFragment">
 
-
-    <TextView
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:id="@+id/flHeaderNew">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            >
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center"
+            android:text="@string/bottom_nav_news"
+            android:textAllCaps="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_border_radius_v1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:textSize="17dp"
+                android:textColor="@color/colorGrey"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:text="@string/placeholder_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_marginEnd="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_search_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <com.maryow.assessment.component.TagLayout
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_below="@id/flHeaderNew"
+        android:id="@+id/tagLayout"
+        android:layout_marginEnd="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"/>
+
+
+
+
+
+</RelativeLayout>

@@ -1,7 +1,7 @@
 package com.maryow.assessment.activity;
 
-import android.view.MenuItem;
 
+import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,7 +21,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPrepare() {
         bottomViewAction();
+
     }
+
+
 
     private void bottomViewAction() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bnNavigation);

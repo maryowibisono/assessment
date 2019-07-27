@@ -18,20 +18,6 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onPrepare(ViewGroup viewGroup) {
-        NewsApi.sources(new NewsApi.Response() {
-            @Override
-            public void onSuccess(Form form) {
-                Log.i("NEWS", form.getErrCode());
-                Log.i("NEWS", form.getErrDesc());
-                Log.i("NEWS", form.getStatus());
-            }
 
-            @Override
-            public void onFailed(Form form) {
-                Log.i("NEWS", form.getErrCode());
-                Log.i("NEWS", form.getErrDesc());
-                Log.i("NEWS", form.getStatus());
-            }
-        });
     }
 }
