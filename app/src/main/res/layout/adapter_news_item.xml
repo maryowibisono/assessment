@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvNews"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/rlAuthorContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/civAuthor"
+                    android:src="@drawable/defaultuser"
+                    android:scaleType="centerCrop"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="15dp"
+                    />
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_toEndOf="@+id/civAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvAuthor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="ABC News"
+                        android:textColor="@color/colorGreyDark"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPublishAt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvAuthor"
+                        android:layout_marginTop="5dp"
+                        android:maxLength="77"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="true"
+                        android:text="Wed Jul 17 201915:39:43"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="17dp" />
+
+
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/ibShareNews"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/colorGreyLight"
+                    android:src="@drawable/ic_share_black_24dp"
+                    android:layout_width="35dp"
+                    android:layout_height="45dp" />
+
+
+            </RelativeLayout>
+
+            
+           <ImageView
+               android:id="@+id/ivNews"
+               android:layout_below="@+id/rlAuthorContent"
+               android:scaleType="centerCrop"
+               android:src="@drawable/defaultnews"
+               android:layout_width="match_parent"
+               android:layout_height="200dp" />
+
+            <RelativeLayout
+                android:padding="15dp"
+                android:layout_below="@+id/ivNews"
+                android:id="@+id/rlNewsContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/tvNewsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="ABC News"
+                    android:textColor="@color/colorGreyDark"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNewsContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvNewsTitle"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:textAlignment="textStart"
+                    android:scrollHorizontally="true"
+                    android:text="The drop follows the cryptocurrency's highest value of the year just a few days prior. Read more here. Read more... More about Tech, Mashable Video, Bitcoin, Economics, and Tech"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="17dp" />
+
+            </RelativeLayout>
+
+
+
+
+        </RelativeLayout>
+        
+        
+        
+    </androidx.cardview.widget.CardView>
+
+    
+
+</LinearLayout>
