@@ -32,17 +32,18 @@
             android:layout_height="wrap_content" />
 
         <RelativeLayout
+            android:id="@+id/rlSearch"
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/bg_border_radius_v1"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textSize="17dp"
                 android:textColor="@color/colorGrey"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="15dp"
                 android:layout_centerVertical="true"
                 android:text="@string/placeholder_search"
                 android:layout_width="wrap_content"
@@ -71,6 +72,13 @@
         android:background="@color/colorWhite"/>
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="15dp"
+        android:layout_below="@id/tagLayout"
+        android:id="@+id/rvTopNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

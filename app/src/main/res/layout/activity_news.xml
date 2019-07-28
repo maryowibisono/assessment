@@ -80,6 +80,47 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+
+        <LinearLayout
+            android:id="@+id/llEmptyNews"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="145dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_receipt_black_24dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="EMPTY NEWS"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorGreyDark"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="All Your news will appear here, once available on our server"
+                android:textAlignment="center"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

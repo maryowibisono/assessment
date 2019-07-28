@@ -6,12 +6,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.maryow.assessment.R;
+import com.maryow.assessment.activity.SearchActivity;
 import com.maryow.assessment.activity.SourceActivity;
+import com.maryow.assessment.adapter.TopNewsAdapter;
 import com.maryow.assessment.api.NewsApi;
+import com.maryow.assessment.common.Config;
 import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.component.TagLayout;
 import com.maryow.assessment.model.news.Form;
@@ -20,8 +27,11 @@ import com.maryow.assessment.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class NewsFragment extends BaseFragment {
+    RecyclerView rvTopNews;
+    RelativeLayout rlSearch;
 
     @Override
     public int initLayout() {
@@ -31,6 +41,43 @@ public class NewsFragment extends BaseFragment {
     @Override
     public void onPrepare(ViewGroup viewGroup) {
         loadCategoryNews(viewGroup);
+        loadTopNews(viewGroup);
+        searchNewsAction(viewGroup);
+    }
+
+    private void searchNewsAction(ViewGroup viewGroup) {
+        rlSearch = viewGroup.findViewById(R.id.rlSearch);
+        rlSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), SearchActivity.class);
+                getActivity().startActivityForResult(i, Config.REQ_CODE_SEARCH);
+            }
+        });
+
+    }
+
+    private void loadTopNews(ViewGroup viewGroup) {
+        rvTopNews =viewGroup.findViewById(R.id.rvTopNews);
+        rvTopNews.setHasFixedSize(true);
+
+        NewsApi.topHeadlinesByCountry(getActivity(), "us", new NewsApi.Response() {
+            @Override
+            public void onSuccess(Form form) {
+                LinearLayoutManager linearLayoutManager = new  LinearLayoutManager(getActivity());
+                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                TopNewsAdapter topNewsAdapter = new TopNewsAdapter(getActivity(),form.getArticles());
+                rvTopNews.setAdapter(topNewsAdapter);
+                rvTopNews.setLayoutManager(linearLayoutManager);
+            }
+
+            @Override
+            public void onFailed(Form form) {
+
+            }
+        });
+
+
     }
 
     private void loadCategoryNews(final ViewGroup viewGroup) {

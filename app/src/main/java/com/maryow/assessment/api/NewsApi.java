@@ -57,8 +57,14 @@ public class NewsApi {
         String url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
                 "&domains=" + domain;
         if(query != null){
-             url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
-                    "&domains=" + domain+ "&q="+query;
+            if (domain.equalsIgnoreCase("")){
+                url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
+                        "&q="+query;
+            }else{
+                url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
+                        "&domains=" + domain+ "&q="+query;
+            }
+
         }
         callNewsApi(context, url, newApiResponse);
     }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.maryow.assessment.R;
@@ -33,6 +34,7 @@ public class NewsActivity extends BaseActivity {
     ImageButton ibtnBack, ibtnSearch;
     MaterialSearchView msvSearch;
     String domain, query;
+    LinearLayout llEmptyNews;
 
     @Override
     protected int initLayout() {
@@ -53,6 +55,7 @@ public class NewsActivity extends BaseActivity {
         ibtnBack = findViewById(R.id.ibtnBack);
         ibtnSearch = findViewById(R.id.ibtnSearch);
         msvSearch =  findViewById(R.id.msvSearch);
+        llEmptyNews =  findViewById(R.id.llEmptyNews);
         btnListener();
         loadDataArticle(null);
         pullToRefresh();
@@ -72,28 +75,47 @@ public class NewsActivity extends BaseActivity {
     private void loadDataArticle(String query) {
         Loading.showLoading(this);
         lvNews.setAdapter(null);
-        domain = CommonUtil.removeHttp(getIntent().getStringExtra("source"));
-        this.query = query;
-        NewsApi.everythingByDomainAndQuery(this, domain, query, new NewsApi.Response() {
+        if(getIntent().getStringExtra("query") != null){
+            domain = "";
+            if (query == null) {
+                this.query = getIntent().getStringExtra("query");
+            }else{
+                this.query = query;
+            }
+        }else{
+            domain = CommonUtil.removeHttp(getIntent().getStringExtra("source"));
+            this.query = query;
+        }
+
+        NewsApi.everythingByDomainAndQuery(this, domain, this.query, new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                newsAdapter = new NewsAdapter(NewsActivity.this, CommonUtil.getPage(form.getArticles(), page, 10));
-                lvNews.setAdapter(newsAdapter);
-                lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(AbsListView absListView, int i) {
+                if (form.getArticles().size() > 0) {
+                    newsAdapter = new NewsAdapter(NewsActivity.this, CommonUtil.getPage(form.getArticles(), page, 10));
+                    lvNews.setAdapter(newsAdapter);
+                    lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+                        @Override
+                        public void onScrollStateChanged(AbsListView absListView, int i) {
 
-                    }
-
-                    @Override
-                    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                        final int lastItem = firstVisibleItem + visibleItemCount;
-                        if (lastItem == totalItemCount && isLoading == false) {
-                            isLoading = true;
-                            loadMoreData();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                            final int lastItem = firstVisibleItem + visibleItemCount;
+                            if (lastItem == totalItemCount && isLoading == false) {
+                                isLoading = true;
+                                loadMoreData();
+                            }
+                        }
+                    });
+
+                    lvNews.setVisibility(View.VISIBLE);
+                    llEmptyNews.setVisibility(View.GONE);
+                }else{
+                    lvNews.setVisibility(View.GONE);
+                    llEmptyNews.setVisibility(View.VISIBLE);
+                }
+
 
                 srlNews.setRefreshing(false);
                 Loading.cancelLoading();
