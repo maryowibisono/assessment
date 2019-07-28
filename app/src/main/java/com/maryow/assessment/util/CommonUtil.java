@@ -1,5 +1,7 @@
 package com.maryow.assessment.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +32,23 @@ public class CommonUtil {
 
         // toIndex exclusive
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
+    }
+
+    public static String removeHttp(String url){
+        URI uri;
+        String hostname;
+        try {
+            uri = new URI(url);
+           hostname = uri.getHost();
+            if (hostname != null) {
+                hostname =  hostname.startsWith("www.") ? hostname.substring(4) : hostname;
+            }
+        } catch (URISyntaxException e) {
+            hostname =  "";
+        }
+
+        return hostname;
+
     }
 
 

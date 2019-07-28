@@ -45,11 +45,6 @@ public class NewsApi {
         callNewsApi(context, url, newApiResponse);
     }
 
-    public static void everythingByQuery(Context context, String query, final Response newApiResponse) {
-        String url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
-                "&q=" + query;
-        callNewsApi(context, url, newApiResponse);
-    }
 
 
     public static void everything(Context context, Form form, final Response newApiResponse) {
@@ -58,9 +53,13 @@ public class NewsApi {
         callNewsApi(context, url, newApiResponse);
     }
 
-    public static void everythingByDomain(Context context, String domain, final Response newApiResponse) {
+    public static void everythingByDomainAndQuery(Context context, String domain, String query, final Response newApiResponse) {
         String url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
-                "&domain=" + domain;
+                "&domains=" + domain;
+        if(query != null){
+             url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
+                    "&domains=" + domain+ "&q="+query;
+        }
         callNewsApi(context, url, newApiResponse);
     }
 

@@ -72,7 +72,7 @@ public class SourceActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Source source = (Source) adapterView.getAdapter().getItem(i);
                 Intent intent = new Intent(SourceActivity.this, NewsActivity.class);
-                intent.putExtra("source", source.getId());
+                intent.putExtra("source", source.getUrl());
                 startActivity(intent);
             }
         });
@@ -152,8 +152,8 @@ public class SourceActivity extends BaseActivity {
                     lvSource.addFooterView(ftView);
                     break;
                 case 1:
-                    List<Source> listInbox = (List<Source>) msg.obj;
-                    if (listInbox != null && listInbox.size() > 0) {
+                    List<Source> sourceList = (List<Source>) msg.obj;
+                    if (sourceList != null && sourceList.size() > 0) {
                         sourceAdapter.addListItemToAdapter((List<Source>) msg.obj);
                         lvSource.removeFooterView(ftView);
                         page++;
