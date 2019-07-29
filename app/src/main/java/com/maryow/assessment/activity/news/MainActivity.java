@@ -1,4 +1,4 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 
 import android.app.Activity;
@@ -15,8 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maryow.assessment.R;
+import com.maryow.assessment.activity.BaseActivity;
 import com.maryow.assessment.common.Config;
 import com.maryow.assessment.fragment.HomeFragment;
+import com.maryow.assessment.fragment.MovieFragment;
 import com.maryow.assessment.fragment.NewsFragment;
 
 public class MainActivity extends BaseActivity {
@@ -59,6 +61,10 @@ public class MainActivity extends BaseActivity {
                     }
                     case R.id.nav_home : {
                         changeFragment(new HomeFragment());
+                        return true;
+                    }
+                    case R.id.nav_movie : {
+                        changeFragment(new MovieFragment());
                         return true;
                     }
                 }

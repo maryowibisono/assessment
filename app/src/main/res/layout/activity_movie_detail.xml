@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.movie.MovieDetailActivity">
+
+    <FrameLayout
+        android:id="@+id/flToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorPrimaryYellow"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
+
+            <TextView
+                android:id="@+id/tvToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MOVIES"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/ibtnBack"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_chevron_left_black_24dp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </FrameLayout>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlMovieDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/flToolbar">
+
+        <ScrollView
+            android:id="@+id/svMovieDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/youtubePlayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:autoPlay="false"
+                    app:showFullScreenButton="false" />
+
+
+                <TextView
+                    android:id="@+id/tvMovieTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/youtubePlayer"
+                    android:layout_margin="15dp"
+                    android:text="The Lion King"
+                    android:textStyle="bold"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorGreyDark"
+                    android:textSize="22dp" />
+
+                <RelativeLayout
+                    android:id="@+id/rlMovieOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvMovieTitle">
+
+
+                    <ImageView
+                        android:id="@+id/ivMovie"
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:layout_margin="15dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_movie_filter_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/tvMovieOverview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_toEndOf="@+id/ivMovie"
+                        android:text="Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub's arrival. Scar, Mufasa's brother—and former heir to the throne—has plans of his own. The battle for Pride Rock is ravaged with betrayal, tragedy and drama, ultimately resulting in Simba's exile. With help from a curious pair of newfound friends, Simba will have to figure out how to grow up and take back what is rightfully his."
+                        android:textAlignment="textStart"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="18dp" />
+
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/vLine"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/rlMovieOverview"
+                    android:background="@color/colorGreyLight" />
+
+                <LinearLayout
+                    android:id="@+id/llMovie"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@+id/vLine"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/tvMovieStar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/ic_star_black_24dp" />
+
+
+                        <TextView
+                            android:id="@+id/tvMovieRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvMovieStar"
+                            android:layout_centerHorizontal="true"
+                            android:text="7.2/10"
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/tvRateCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvMovieRate"
+                            android:layout_centerHorizontal="true"
+                            android:text="54,888"
+                            android:textColor="@color/colorGreyLight"
+                            android:textSize="15dp" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tvMovieRuntime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:text="118 Minutes"
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvMovieLanguage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvMovieRuntime"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="54dp"
+                            android:text="English"
+                            android:textColor="@color/colorGreyLight"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/vLine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/llMovie"
+                    android:background="@color/colorGreyLight" />
+
+
+                <RelativeLayout
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/rlMovieReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vLine2">
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlReviewHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="20dp"
+                            android:text="User Reviews"
+                            android:textColor="@color/colorGreyDark"
+                            android:textSize="25dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvSeeAll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="20dp"
+                            android:text="SEE ALL"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlReviewHead">
+
+
+                        <TextView
+                            android:id="@+id/tvReview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="5dp"
+                            android:maxLength="300"
+                            android:ellipsize="end"
+                            android:text="The Lion King’ is a catastrophe; a new low in the ever-diminishing returns of Disney’s endless run of remakes. There’s nothing redeeming about it, with every decision either ill-conceived or mishandled to the point of incompetence. In Favreau’s hands, ‘The Lion King’ is rendered thunderously dull, lacking in any tension or complex characterisation, taking a laboriously long time to go nowhere and never once justifying its contentious existence. Even with my dislike of the original, I was flabbergasted at how thoroughly this film never attempts to understand why so many people love the 1994 film. If nothing else, this film makes it abundantly clear that Disney has no interest in making great cinema or honouring its own legacy. They don’t care whether the film is good or whether you enjoy it. All they care about is using nostalgia to trick you into buying your ticket so they can make as much money off you as they can, and maybe if they throw some recognisable iconic moments from your childhood on the screen, they may even be able to fool you into thinking you’d had a good time. ‘The Lion King’ is the ultimate diabolical apex of the commercialisation of nostalgia, and its inevitable box office success will just prove how easily we continue to be duped and how thoroughly they have trained us to not care about the quality of what we see. If this really is the future of mainstream cinema, then we are in serious, serious trouble.\r\n- Daniel Lammin\r\n\r\nRead Daniel's full article...\r\nhttps://www.maketheswitch.com.au/article/review-the-lion-king-a-catastrophic-and-soulless-remake-of-a-disney-classic"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="15dp" />
+
+
+
+                        <TextView
+                            android:textColor="@color/colorGreyLight"
+                            android:layout_marginEnd="5dp"
+                            android:layout_below="@+id/tvReview"
+                            android:layout_toStartOf="@+id/tvAuthor"
+                            android:id="@+id/tvAuthorBy"
+                            android:text="By"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:textColor="@color/colorGreyDark"
+                            android:layout_marginEnd="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tvReview"
+                            android:id="@+id/tvAuthor"
+                            android:text="Devorah"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </ScrollView>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -14,7 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.maryow.assessment.R;
-import com.maryow.assessment.adapter.SourceAdapter;
+import com.maryow.assessment.activity.BaseActivity;
+import com.maryow.assessment.adapter.news.SourceAdapter;
 import com.maryow.assessment.api.NewsApi;
 import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.model.news.Form;

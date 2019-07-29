@@ -2,21 +2,19 @@ package com.maryow.assessment.fragment;
 
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.maryow.assessment.R;
-import com.maryow.assessment.activity.SearchActivity;
-import com.maryow.assessment.activity.SourceActivity;
-import com.maryow.assessment.adapter.TopNewsAdapter;
+import com.maryow.assessment.activity.news.SearchActivity;
+import com.maryow.assessment.activity.news.SourceActivity;
+import com.maryow.assessment.adapter.news.TopNewsAdapter;
 import com.maryow.assessment.api.NewsApi;
 import com.maryow.assessment.common.Config;
 import com.maryow.assessment.component.Loading;
@@ -26,8 +24,7 @@ import com.maryow.assessment.model.news.Source;
 import com.maryow.assessment.util.CommonUtil;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
 
 public class NewsFragment extends BaseFragment {
     RecyclerView rvTopNews;

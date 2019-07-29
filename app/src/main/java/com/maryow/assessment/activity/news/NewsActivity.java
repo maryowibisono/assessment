@@ -1,4 +1,4 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -13,7 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.maryow.assessment.R;
-import com.maryow.assessment.adapter.NewsAdapter;
+import com.maryow.assessment.activity.BaseActivity;
+import com.maryow.assessment.adapter.news.NewsAdapter;
 import com.maryow.assessment.api.NewsApi;
 import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.model.news.Article;

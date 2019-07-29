@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.news.NewsActivity">
+    tools:context=".activity.movie.MovieReviewActivity">
 
     <FrameLayout
         android:id="@+id/flToolbar"
@@ -14,23 +14,22 @@
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:contentInsetEnd="0dp"
-            android:contentInsetLeft="0dp"
-            android:contentInsetRight="0dp"
+            android:background="@color/colorPrimaryYellow"
             android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
             app:contentInsetEnd="0dp"
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            >
+            app:contentInsetStart="0dp">
 
             <TextView
                 android:id="@+id/tvToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="NEWS"
+                android:text="REVIEW"
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -43,20 +42,8 @@
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
 
-            <ImageButton
-                android:id="@+id/ibtnSearch"
-                android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_search_black_24dp" />
-
         </androidx.appcompat.widget.Toolbar>
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/msvSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </FrameLayout>
 
@@ -65,24 +52,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srlNews"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlReview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lvReview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        </ListView>
 
-            <ListView
-                android:id="@+id/lvNews"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-            </ListView>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
-            android:id="@+id/llEmptyNews"
+            android:id="@+id/llEmptyReview"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_centerHorizontal="true"
@@ -96,14 +82,14 @@
                 android:layout_height="145dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_receipt_black_24dp" />
+                android:src="@drawable/ic_rate_review_black_24dp" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="EMPTY NEWS"
+                android:text="EMPTY REVIEW"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/colorGreyDark"
@@ -115,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="All Your news will appear here, once available on our server"
+                android:text="All Your review will appear here, once available on our server"
                 android:textAlignment="center"
                 android:textSize="14dp" />
 

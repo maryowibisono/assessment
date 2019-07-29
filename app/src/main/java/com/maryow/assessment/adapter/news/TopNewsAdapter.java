@@ -1,4 +1,4 @@
-package com.maryow.assessment.adapter;
+package com.maryow.assessment.adapter.news;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.maryow.assessment.R;
-import com.maryow.assessment.activity.NewsDetailActivity;
+import com.maryow.assessment.activity.news.NewsDetailActivity;
 import com.maryow.assessment.model.news.Article;
 
 import java.util.List;

@@ -27,32 +27,6 @@ public class NewsApi {
         callNewsApi(context, url, newApiResponse);
     }
 
-    public static void topHeadlinesBySource(Context context, String source, final Response newApiResponse) {
-        String url = Config.NEWS_API_URL + "top-headlines?apiKey=" + Config.NEWS_API_KEY +
-                "&sources=" + source;
-        callNewsApi(context, url, newApiResponse);
-    }
-
-    public static void topHeadlinesByCountryAndCategory(Context context, String country, String category, final Response newApiResponse) {
-        String url = Config.NEWS_API_URL + "top-headlines?apiKey=" + Config.NEWS_API_KEY +
-                "&country=" + country + "&category=" + category;
-        callNewsApi(context, url, newApiResponse);
-    }
-
-    public static void topHeadlinesByQuery(Context context, String query, final Response newApiResponse) {
-        String url = Config.NEWS_API_URL + "top-headlines?apiKey=" + Config.NEWS_API_KEY +
-                "&q=" + query;
-        callNewsApi(context, url, newApiResponse);
-    }
-
-
-
-    public static void everything(Context context, Form form, final Response newApiResponse) {
-        String url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
-                "&q=" + form.getQ() + "&from=" + form.getFrom() + "&to=" + form.getTo() + "&sortBy=" + form.getSortBy();
-        callNewsApi(context, url, newApiResponse);
-    }
-
     public static void everythingByDomainAndQuery(Context context, String domain, String query, final Response newApiResponse) {
         String url = Config.NEWS_API_URL + "everything?apiKey=" + Config.NEWS_API_KEY +
                 "&domains=" + domain;

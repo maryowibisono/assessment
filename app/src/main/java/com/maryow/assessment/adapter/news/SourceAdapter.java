@@ -1,4 +1,4 @@
-package com.maryow.assessment.adapter;
+package com.maryow.assessment.adapter.news;
 
 
 import android.content.Context;

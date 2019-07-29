@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.news.SourceActivity">
-
+    tools:context=".activity.movie.MovieActivity">
 
     <FrameLayout
-        android:id="@+id/flSource"
+        android:id="@+id/flToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +22,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
             app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryYellow"
             >
 
             <TextView
@@ -31,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="SOURCE"
+                android:text="MOVIES"
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -43,36 +42,84 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:src="@drawable/ic_chevron_left_black_24dp" />
 
-            
+
+            <ImageButton
+                android:id="@+id/ibtnSearch"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_search_black_24dp" />
 
         </androidx.appcompat.widget.Toolbar>
 
         <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/msvSource"
+            android:id="@+id/msvSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </FrameLayout>
 
     <RelativeLayout
-        android:layout_below="@+id/flSource"
+        android:layout_below="@+id/flToolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srlSource"
+            android:id="@+id/srlMovie"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
             <ListView
-                android:id="@+id/lvSource"
+                android:id="@+id/lvMovie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </ListView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llEmptyMovie"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="145dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_movie_filter_black_24dp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="EMPTY MOVIE"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/colorGreyDark"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="All Your movie will appear here, once available on our server"
+                android:textAlignment="center"
+                android:textSize="14dp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

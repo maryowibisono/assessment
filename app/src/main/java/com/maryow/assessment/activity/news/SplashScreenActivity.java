@@ -1,9 +1,10 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 import android.content.Intent;
 import android.os.Handler;
 
 import com.maryow.assessment.R;
+import com.maryow.assessment.activity.BaseActivity;
 import com.maryow.assessment.common.Config;
 
 public class SplashScreenActivity extends BaseActivity {

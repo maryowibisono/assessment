@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SearchActivity"></activity>
-        <activity android:name=".activity.NewsDetailActivity" />
-        <activity android:name=".activity.NewsActivity" />
-        <activity android:name=".activity.SourceActivity" />
+        <activity android:name=".activity.movie.MovieReviewActivity"></activity>
+        <activity android:name=".activity.movie.MovieDetailActivity" />
+        <activity android:name=".activity.movie.MovieActivity" />
+        <activity android:name=".activity.news.SearchActivity" />
+        <activity android:name=".activity.news.NewsDetailActivity" />
+        <activity android:name=".activity.news.NewsActivity" />
+        <activity android:name=".activity.news.SourceActivity" />
         <activity
-            android:name=".activity.SplashScreenActivity"
+            android:name=".activity.news.SplashScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
@@ -25,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.news.MainActivity" />
     </application>
 
 </manifest>

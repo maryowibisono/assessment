@@ -1,4 +1,4 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 
 import com.maryow.assessment.R;
+import com.maryow.assessment.activity.BaseActivity;
 import com.maryow.assessment.component.Loading;
 
 public class NewsDetailActivity extends BaseActivity {

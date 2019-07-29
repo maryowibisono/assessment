@@ -1,4 +1,4 @@
-package com.maryow.assessment.activity;
+package com.maryow.assessment.activity.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
 import com.maryow.assessment.R;
+import com.maryow.assessment.activity.BaseActivity;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class SearchActivity extends BaseActivity {
