@@ -40,14 +40,14 @@ public class MovieApi {
         });
     }
 
-    public static void movieByGenre(Context context, int genre, int page,String query, final MovieApi.Response movieApiResponse) {
+    public static void movieByGenre(Context context, int genre, int page, String query, final MovieApi.Response movieApiResponse) {
         String url = Config.MOVIE_API_URL + "discover/movie?api_key=" + Config.MOVIE_API_KEY +
                 "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=" +
                 page + "&with_genres=" + genre;
-        if (query != null){
+        if (query != null) {
             url = Config.MOVIE_API_URL + "search/movie?api_key=" + Config.MOVIE_API_KEY +
                     "&language=en-US&include_adult=false&page=" +
-                    page +"&query="+query;
+                    page + "&query=" + query;
         }
         OkHttpUtil okHttpUtil = new OkHttpUtil();
         okHttpUtil.get(context, url, new OkHttpResponse() {
@@ -73,7 +73,7 @@ public class MovieApi {
     }
 
     public static void movieVideo(Context context, String movieId, final MovieApi.Response movieApiResponse) {
-        String url = Config.MOVIE_API_URL + "movie/"+movieId+"/videos?api_key=" + Config.MOVIE_API_KEY +
+        String url = Config.MOVIE_API_URL + "movie/" + movieId + "/videos?api_key=" + Config.MOVIE_API_KEY +
                 "&language=en-US";
         OkHttpUtil okHttpUtil = new OkHttpUtil();
         okHttpUtil.get(context, url, new OkHttpResponse() {
@@ -96,7 +96,7 @@ public class MovieApi {
     }
 
     public static void movieDetail(Context context, String movieId, final MovieApi.Response movieApiResponse) {
-        String url = Config.MOVIE_API_URL + "movie/"+movieId+"?api_key=" + Config.MOVIE_API_KEY +
+        String url = Config.MOVIE_API_URL + "movie/" + movieId + "?api_key=" + Config.MOVIE_API_KEY +
                 "&language=en-US";
         OkHttpUtil okHttpUtil = new OkHttpUtil();
         okHttpUtil.get(context, url, new OkHttpResponse() {
@@ -119,8 +119,8 @@ public class MovieApi {
     }
 
     public static void movieReview(Context context, String movieId, int page, final MovieApi.Response movieApiResponse) {
-        String url = Config.MOVIE_API_URL + "movie/"+movieId+"/reviews?api_key=" + Config.MOVIE_API_KEY +
-                "&language=en-US&page="+page;
+        String url = Config.MOVIE_API_URL + "movie/" + movieId + "/reviews?api_key=" + Config.MOVIE_API_KEY +
+                "&language=en-US&page=" + page;
         OkHttpUtil okHttpUtil = new OkHttpUtil();
         okHttpUtil.get(context, url, new OkHttpResponse() {
             @Override
@@ -143,7 +143,6 @@ public class MovieApi {
             }
         });
     }
-
 
     public interface Response {
         void onSuccess(Form form);

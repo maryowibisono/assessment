@@ -1,47 +1,32 @@
 package com.maryow.assessment.activity.movie;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
-import android.os.Bundle;
+
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
-import com.maryow.assessment.activity.news.SourceActivity;
 import com.maryow.assessment.adapter.movie.ReviewAdapter;
-import com.maryow.assessment.adapter.news.SourceAdapter;
 import com.maryow.assessment.api.MovieApi;
-import com.maryow.assessment.api.NewsApi;
 import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.model.movie.Form;
 import com.maryow.assessment.model.movie.MovieReview;
-import com.maryow.assessment.model.news.Source;
-import com.maryow.assessment.util.CommonUtil;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.maryow.assessment.view.movie.MovieReviewView;
 
 import java.util.List;
 
-public class MovieReviewActivity extends BaseActivity {
-    View ftView;
-    Handler mHandler;
-    ListView lvReview;
-    ReviewAdapter reviewAdapter;
-    int page = 1;
-    boolean isLoading = false;
-    SwipeRefreshLayout srlReview;
-    ImageButton ibtnBack;
-    String movieId;
-    LinearLayout llEmptyReview;
+public class MovieReviewActivity extends BaseActivity<MovieReviewView> {
 
+    @Override
+    public MovieReviewView setViewHolder(View parent) {
+        return new MovieReviewView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -49,46 +34,37 @@ public class MovieReviewActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        loadReview();
-    }
-
-    private void loadReview() {
+    protected void onPrepare(MovieReviewView holder) {
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ftView = li.inflate(R.layout.adapter_source_loading, null);
-        mHandler = new MovieReviewActivity.MyHandler();
-        lvReview = findViewById(R.id.lvReview);
-        srlReview = findViewById(R.id.srlReview);
-        ibtnBack = findViewById(R.id.ibtnBack);
-        llEmptyReview = findViewById(R.id.llEmptyReview);
-        movieId = getIntent().getStringExtra("movieId");
+        holder.ftView = li.inflate(R.layout.adapter_source_loading, null);
+        holder.mHandler = new MovieReviewActivity.MyHandler();
+        holder.movieId = getIntent().getStringExtra("movieId");
         btnListener();
         loadData();
         pullToRefresh();
     }
 
     private void pullToRefresh() {
-        srlReview.setColorSchemeResources(R.color.colorPrimary);
-        srlReview.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        viewHolder.srlReview.setColorSchemeResources(R.color.colorPrimary);
+        viewHolder.srlReview.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;
+                viewHolder.page = 1;
                 loadData();
             }
         });
     }
 
     private void loadData() {
-
         Loading.showLoading(this);
-        lvReview.setAdapter(null);
-        MovieApi.movieReview(this, movieId, page, new MovieApi.Response() {
+        viewHolder.lvReview.setAdapter(null);
+        MovieApi.movieReview(this, viewHolder.movieId, viewHolder.page, new MovieApi.Response() {
             @Override
             public void onSuccess(com.maryow.assessment.model.movie.Form form) {
                 if (form.getReviews().size() > 0) {
-                    reviewAdapter = new ReviewAdapter(MovieReviewActivity.this, form.getReviews());
-                    lvReview.setAdapter(reviewAdapter);
-                    lvReview.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    viewHolder.reviewAdapter = new ReviewAdapter(MovieReviewActivity.this, form.getReviews());
+                    viewHolder.lvReview.setAdapter(viewHolder.reviewAdapter);
+                    viewHolder.lvReview.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView absListView, int i) {
 
@@ -97,50 +73,51 @@ public class MovieReviewActivity extends BaseActivity {
                         @Override
                         public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                             final int lastItem = firstVisibleItem + visibleItemCount;
-                            if (lastItem == totalItemCount && isLoading == false) {
-                                isLoading = true;
+                            if (lastItem == totalItemCount && viewHolder.isLoading == false) {
+                                viewHolder.isLoading = true;
                                 loadMoreData();
                             }
                         }
                     });
 
-                    lvReview.setVisibility(View.VISIBLE);
-                    llEmptyReview.setVisibility(View.GONE);
+                    viewHolder.lvReview.setVisibility(View.VISIBLE);
+                    viewHolder.llEmptyReview.setVisibility(View.GONE);
                 }else{
-                    lvReview.setVisibility(View.GONE);
-                    llEmptyReview.setVisibility(View.VISIBLE);
+                    viewHolder.lvReview.setVisibility(View.GONE);
+                    viewHolder.llEmptyReview.setVisibility(View.VISIBLE);
                 }
 
-
-                srlReview.setRefreshing(false);
+                viewHolder.srlReview.setRefreshing(false);
                 Loading.cancelLoading();
             }
 
             @Override
             public void onFailed(Form form) {
+                onError(MovieReviewActivity.this, form.getErrDesc());
                 Loading.cancelLoading();
             }
         });
     }
 
     private void loadMoreData() {
-        mHandler.sendEmptyMessage(0);
-        MovieApi.movieReview(MovieReviewActivity.this, movieId, page + 1, new MovieApi.Response() {
+        viewHolder.mHandler.sendEmptyMessage(0);
+        MovieApi.movieReview(MovieReviewActivity.this, viewHolder.movieId, viewHolder.page + 1, new MovieApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                Message msg = mHandler.obtainMessage(1, form.getReviews());
-                mHandler.sendMessage(msg);
+                Message msg = viewHolder.mHandler.obtainMessage(1, form.getReviews());
+                viewHolder.mHandler.sendMessage(msg);
             }
 
             @Override
             public void onFailed(Form form) {
-                Loading.cancelLoading();
+                onError(MovieReviewActivity.this, form.getErrDesc());
+
             }
         });
     }
 
     private void btnListener() {
-        ibtnBack.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -154,17 +131,17 @@ public class MovieReviewActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    lvReview.addFooterView(ftView);
+                    viewHolder.lvReview.addFooterView(viewHolder.ftView);
                     break;
                 case 1:
                     List<MovieReview> movieReviews = (List<MovieReview>) msg.obj;
                     if (movieReviews != null && movieReviews.size() > 0) {
-                        reviewAdapter.addListItemToAdapter((List<MovieReview>) msg.obj);
-                        lvReview.removeFooterView(ftView);
-                        page++;
-                        isLoading = false;
+                        viewHolder.reviewAdapter.addListItemToAdapter((List<MovieReview>) msg.obj);
+                        viewHolder.lvReview.removeFooterView(viewHolder.ftView);
+                        viewHolder.page++;
+                        viewHolder.isLoading = false;
                     } else {
-                        lvReview.removeFooterView(ftView);
+                        viewHolder.lvReview.removeFooterView(viewHolder.ftView);
                     }
                     break;
                 default:

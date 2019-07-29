@@ -2,12 +2,19 @@ package com.maryow.assessment.activity.news;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.view.View;
 
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
 import com.maryow.assessment.common.Config;
+import com.maryow.assessment.view.news.SplashScreenView;
 
-public class SplashScreenActivity extends BaseActivity {
+public class SplashScreenActivity extends BaseActivity<SplashScreenView> {
+
+    @Override
+    public SplashScreenView setViewHolder(View parent) {
+        return new SplashScreenView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -15,7 +22,7 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
+    protected void onPrepare(SplashScreenView holder) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

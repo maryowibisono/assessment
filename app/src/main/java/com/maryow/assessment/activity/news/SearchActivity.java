@@ -1,20 +1,23 @@
 package com.maryow.assessment.activity.news;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
+import com.maryow.assessment.view.news.SearchView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-public class SearchActivity extends BaseActivity {
-    MaterialSearchView msvSearch;
+public class SearchActivity extends BaseActivity<SearchView> {
+
+    @Override
+    public SearchView setViewHolder(View parent) {
+        return new SearchView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -22,22 +25,19 @@ public class SearchActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        msvSearch = findViewById(R.id.msvSearch);
-        ViewTreeObserver vto = msvSearch.getViewTreeObserver();
+    protected void onPrepare(final SearchView holder) {
+        ViewTreeObserver vto = holder.msvSearch.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                msvSearch.setSubmitOnClick(true);
-                msvSearch.showSearch();
-
-
-                msvSearch.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+                holder.msvSearch.setSubmitOnClick(true);
+                holder.msvSearch.showSearch();
+                holder.msvSearch.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
                         Intent returnIntent = new Intent();
-                        returnIntent.putExtra("query",query);
-                        setResult(Activity.RESULT_OK,returnIntent);
+                        returnIntent.putExtra("query", query);
+                        setResult(Activity.RESULT_OK, returnIntent);
                         finish();
                         return false;
                     }
@@ -48,28 +48,25 @@ public class SearchActivity extends BaseActivity {
                     }
                 });
 
-                msvSearch.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+                holder.msvSearch.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
                     @Override
                     public void onSearchViewShown() {
-                        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     }
 
                     @Override
                     public void onSearchViewClosed() {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(
+                        InputMethodManager imm = (InputMethodManager) getSystemService(
                                 Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(msvSearch.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(holder.msvSearch.getWindowToken(), 0);
                         Intent returnIntent = new Intent();
-                        setResult(Activity.RESULT_CANCELED,returnIntent);
+                        setResult(Activity.RESULT_CANCELED, returnIntent);
                         finish();
                     }
                 });
             }
         });
-
-
     }
-
 
 }

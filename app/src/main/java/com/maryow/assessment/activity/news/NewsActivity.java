@@ -8,34 +8,26 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
+import com.maryow.assessment.activity.movie.MovieReviewActivity;
 import com.maryow.assessment.adapter.news.NewsAdapter;
 import com.maryow.assessment.api.NewsApi;
 import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.model.news.Article;
 import com.maryow.assessment.model.news.Form;
 import com.maryow.assessment.util.CommonUtil;
+import com.maryow.assessment.view.news.NewsView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.List;
 
-public class NewsActivity extends BaseActivity {
-    View ftView;
-    Handler mHandler;
-    ListView lvNews;
-    NewsAdapter newsAdapter;
-    int page = 1;
-    boolean isLoading = false;
-    SwipeRefreshLayout srlNews;
-    ImageButton ibtnBack, ibtnSearch;
-    MaterialSearchView msvSearch;
-    String domain, query;
-    LinearLayout llEmptyNews;
+public class NewsActivity extends BaseActivity<NewsView> {
+
+    @Override
+    public NewsView setViewHolder(View parent) {
+        return new NewsView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -43,58 +35,49 @@ public class NewsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        loadNewsByDomain();
-    }
-
-    private void loadNewsByDomain() {
+    protected void onPrepare(NewsView holder) {
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ftView = li.inflate(R.layout.adapter_source_loading, null);
-        mHandler = new MyHandler();
-        lvNews = findViewById(R.id.lvNews);
-        srlNews = findViewById(R.id.srlNews);
-        ibtnBack = findViewById(R.id.ibtnBack);
-        ibtnSearch = findViewById(R.id.ibtnSearch);
-        msvSearch =  findViewById(R.id.msvSearch);
-        llEmptyNews =  findViewById(R.id.llEmptyNews);
+        holder.ftView = li.inflate(R.layout.adapter_source_loading, null);
+        holder.mHandler = new NewsActivity.MyHandler();
         btnListener();
         loadDataArticle(null);
-        pullToRefresh();
+        pullToRefresh(holder);
     }
 
-    private void pullToRefresh() {
-        srlNews.setColorSchemeResources(R.color.colorPrimary);
-        srlNews.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+    private void pullToRefresh(final NewsView holder) {
+        holder.srlNews.setColorSchemeResources(R.color.colorPrimary);
+        holder.srlNews.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;
+                holder.page = 1;
                 loadDataArticle(null);
             }
         });
     }
 
-    private void loadDataArticle(String query) {
+    private void loadDataArticle(String queryStr) {
         Loading.showLoading(this);
-        lvNews.setAdapter(null);
-        if(getIntent().getStringExtra("query") != null){
-            domain = "";
-            if (query == null) {
-                this.query = getIntent().getStringExtra("query");
-            }else{
-                this.query = query;
+        viewHolder.lvNews.setAdapter(null);
+        if (getIntent().getStringExtra("query") != null) {
+            getViewHolder().domain = "";
+            if (queryStr == null) {
+                viewHolder.query = getIntent().getStringExtra("query");
+            } else {
+                viewHolder.query = queryStr;
             }
-        }else{
-            domain = CommonUtil.removeHttp(getIntent().getStringExtra("source"));
-            this.query = query;
+        } else {
+            viewHolder.domain = CommonUtil.removeHttp(getIntent().getStringExtra("source"));
+            viewHolder.query = queryStr;
         }
 
-        NewsApi.everythingByDomainAndQuery(this, domain, this.query, new NewsApi.Response() {
+        NewsApi.everythingByDomainAndQuery(this, viewHolder.domain, viewHolder.query, new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
                 if (form.getArticles().size() > 0) {
-                    newsAdapter = new NewsAdapter(NewsActivity.this, CommonUtil.getPage(form.getArticles(), page, 10));
-                    lvNews.setAdapter(newsAdapter);
-                    lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    viewHolder.newsAdapter = new NewsAdapter(NewsActivity.this, CommonUtil.getPage(form.getArticles(),  viewHolder.page, 10));
+                    viewHolder.lvNews.setAdapter(viewHolder.newsAdapter);
+                    viewHolder.lvNews.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView absListView, int i) {
 
@@ -103,65 +86,66 @@ public class NewsActivity extends BaseActivity {
                         @Override
                         public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                             final int lastItem = firstVisibleItem + visibleItemCount;
-                            if (lastItem == totalItemCount && isLoading == false) {
-                                isLoading = true;
+                            if (lastItem == totalItemCount && viewHolder.isLoading == false) {
+                                viewHolder.isLoading = true;
                                 loadMoreData();
                             }
                         }
                     });
 
-                    lvNews.setVisibility(View.VISIBLE);
-                    llEmptyNews.setVisibility(View.GONE);
-                }else{
-                    lvNews.setVisibility(View.GONE);
-                    llEmptyNews.setVisibility(View.VISIBLE);
+                    viewHolder.lvNews.setVisibility(View.VISIBLE);
+                    viewHolder.llEmptyNews.setVisibility(View.GONE);
+                } else {
+                    viewHolder.lvNews.setVisibility(View.GONE);
+                    viewHolder.llEmptyNews.setVisibility(View.VISIBLE);
                 }
 
 
-                srlNews.setRefreshing(false);
+                viewHolder.srlNews.setRefreshing(false);
                 Loading.cancelLoading();
             }
 
 
             @Override
             public void onFailed(Form form) {
-
+                onError(NewsActivity.this, form.getErrDesc());
+                Loading.cancelLoading();
             }
         });
     }
 
     private void loadMoreData() {
-        mHandler.sendEmptyMessage(0);
-        NewsApi.everythingByDomainAndQuery(NewsActivity.this, domain, query, new NewsApi.Response() {
+        viewHolder.mHandler.sendEmptyMessage(0);
+        NewsApi.everythingByDomainAndQuery(NewsActivity.this, viewHolder.domain, viewHolder.query, new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                Message msg = mHandler.obtainMessage(1, CommonUtil.getPage(form.getArticles(), page + 1, 10));
-                mHandler.sendMessage(msg);
+                Message msg = viewHolder.mHandler.obtainMessage(1, CommonUtil.getPage(form.getArticles(), viewHolder.page + 1, 10));
+                viewHolder.mHandler.sendMessage(msg);
             }
 
             @Override
             public void onFailed(Form form) {
-
+                onError(NewsActivity.this, form.getErrDesc());
             }
         });
     }
 
     private void btnListener() {
-        ibtnBack.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
-        ibtnSearch.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                msvSearch.showSearch();
+                viewHolder.msvSearch.showSearch();
             }
         });
 
-        msvSearch.setSubmitOnClick(true);
-        msvSearch.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        viewHolder.msvSearch.setSubmitOnClick(true);
+        viewHolder.msvSearch.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 loadDataArticle(query);
@@ -181,17 +165,17 @@ public class NewsActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    lvNews.addFooterView(ftView);
+                    viewHolder.lvNews.addFooterView(viewHolder.ftView);
                     break;
                 case 1:
                     List<Article> listArticle = (List<Article>) msg.obj;
                     if (listArticle != null && listArticle.size() > 0) {
-                        newsAdapter.addListItemToAdapter((List<Article>) msg.obj);
-                        lvNews.removeFooterView(ftView);
-                        page++;
-                        isLoading = false;
+                        viewHolder.newsAdapter.addListItemToAdapter((List<Article>) msg.obj);
+                        viewHolder.lvNews.removeFooterView(viewHolder.ftView);
+                        viewHolder.page++;
+                        viewHolder.isLoading = false;
                     } else {
-                        lvNews.removeFooterView(ftView);
+                        viewHolder.lvNews.removeFooterView(viewHolder.ftView);
                     }
                     break;
                 default:

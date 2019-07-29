@@ -4,15 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.maryow.assessment.R;
-import com.maryow.assessment.common.Config;
-import com.maryow.assessment.model.movie.Movie;
 import com.maryow.assessment.model.movie.MovieReview;
-import com.maryow.assessment.model.news.Source;
 
 import java.util.List;
 

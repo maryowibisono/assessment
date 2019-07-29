@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
@@ -21,21 +19,16 @@ import com.maryow.assessment.component.Loading;
 import com.maryow.assessment.model.news.Form;
 import com.maryow.assessment.model.news.Source;
 import com.maryow.assessment.util.CommonUtil;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.maryow.assessment.view.news.SourceView;
 
 import java.util.List;
 
-public class SourceActivity extends BaseActivity {
+public class SourceActivity extends BaseActivity<SourceView> {
 
-    View ftView;
-    Handler mHandler;
-    ListView lvSource;
-    SourceAdapter sourceAdapter;
-    int page = 1;
-    boolean isLoading = false;
-    SwipeRefreshLayout srlSource;
-    ImageButton ibtnBack;
-    MaterialSearchView msvSource;
+    @Override
+    public SourceView setViewHolder(View parent) {
+        return new SourceView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -43,32 +36,25 @@ public class SourceActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        loadSourceByCategory();
-    }
-
-    private void loadSourceByCategory() {
+    protected void onPrepare(SourceView holder) {
         LayoutInflater li = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ftView = li.inflate(R.layout.adapter_source_loading, null);
-        mHandler = new MyHandler();
-        lvSource = findViewById(R.id.lvSource);
-        srlSource = findViewById(R.id.srlSource);
-        ibtnBack = findViewById(R.id.ibtnBack);
-        msvSource =  findViewById(R.id.msvSource);
+        holder.ftView = li.inflate(R.layout.adapter_source_loading, null);
+        holder.mHandler = new SourceActivity.MyHandler();
         btnListener();
         getLoadData();
         pullToRefresh();
+
     }
 
     private void btnListener() {
-        ibtnBack.setOnClickListener(new View.OnClickListener() {
+        viewHolder.ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
 
-        lvSource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        viewHolder.lvSource.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Source source = (Source) adapterView.getAdapter().getItem(i);
@@ -80,12 +66,11 @@ public class SourceActivity extends BaseActivity {
     }
 
     private void pullToRefresh() {
-
-        srlSource.setColorSchemeResources(R.color.colorPrimary);
-        srlSource.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        viewHolder.srlSource.setColorSchemeResources(R.color.colorPrimary);
+        viewHolder.srlSource.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 1;
+                viewHolder.page = 1;
                 getLoadData();
             }
         });
@@ -94,53 +79,56 @@ public class SourceActivity extends BaseActivity {
 
     private void getLoadData() {
         Loading.showLoading(this);
-        lvSource.setAdapter(null);
+        viewHolder.lvSource.setAdapter(null);
         NewsApi.sourcesByCategory(this, getIntent().getStringExtra("category"), new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                sourceAdapter = new SourceAdapter(SourceActivity.this, CommonUtil.getPage(form.getSources(), page, 10));
-                lvSource.setAdapter(sourceAdapter);
-                lvSource.setOnScrollListener(new AbsListView.OnScrollListener() {
+                viewHolder.sourceAdapter = new SourceAdapter(SourceActivity.this,
+                        CommonUtil.getPage(form.getSources(), viewHolder.page, 10));
+                viewHolder.lvSource.setAdapter(viewHolder.sourceAdapter);
+                viewHolder.lvSource.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView absListView, int i) {
 
                     }
 
                     @Override
-                    public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    public void onScroll(AbsListView absListView, int firstVisibleItem,
+                                         int visibleItemCount, int totalItemCount) {
                         final int lastItem = firstVisibleItem + visibleItemCount;
-                        if (lastItem == totalItemCount && isLoading == false) {
-                            isLoading = true;
+                        if (lastItem == totalItemCount && viewHolder.isLoading == false) {
+                            viewHolder.isLoading = true;
                             loadMoreData();
                         }
                     }
                 });
 
-                srlSource.setRefreshing(false);
+                viewHolder.srlSource.setRefreshing(false);
                 Loading.cancelLoading();
             }
 
 
             @Override
             public void onFailed(Form form) {
-
+                onError(SourceActivity.this, form.getErrDesc());
+                Loading.cancelLoading();
             }
         });
 
     }
 
     private void loadMoreData() {
-        mHandler.sendEmptyMessage(0);
+        viewHolder.mHandler.sendEmptyMessage(0);
         NewsApi.sourcesByCategory(SourceActivity.this, getIntent().getStringExtra("category"), new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                Message msg = mHandler.obtainMessage(1, CommonUtil.getPage(form.getSources(), page + 1, 10));
-                mHandler.sendMessage(msg);
+                Message msg = viewHolder.mHandler.obtainMessage(1, CommonUtil.getPage(form.getSources(), viewHolder.page + 1, 10));
+                viewHolder.mHandler.sendMessage(msg);
             }
 
             @Override
             public void onFailed(Form form) {
-
+                onError(SourceActivity.this, form.getErrDesc());
             }
         });
     }
@@ -150,17 +138,17 @@ public class SourceActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    lvSource.addFooterView(ftView);
+                    viewHolder.lvSource.addFooterView(viewHolder.ftView);
                     break;
                 case 1:
                     List<Source> sourceList = (List<Source>) msg.obj;
                     if (sourceList != null && sourceList.size() > 0) {
-                        sourceAdapter.addListItemToAdapter((List<Source>) msg.obj);
-                        lvSource.removeFooterView(ftView);
-                        page++;
-                        isLoading = false;
+                        viewHolder.sourceAdapter.addListItemToAdapter((List<Source>) msg.obj);
+                        viewHolder.lvSource.removeFooterView(viewHolder.ftView);
+                        viewHolder.page++;
+                        viewHolder.isLoading = false;
                     } else {
-                        lvSource.removeFooterView(ftView);
+                        viewHolder.lvSource.removeFooterView(viewHolder.ftView);
                     }
                     break;
                 default:

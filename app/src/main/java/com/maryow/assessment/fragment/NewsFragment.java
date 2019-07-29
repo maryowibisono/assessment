@@ -55,22 +55,25 @@ public class NewsFragment extends BaseFragment {
     }
 
     private void loadTopNews(ViewGroup viewGroup) {
-        rvTopNews =viewGroup.findViewById(R.id.rvTopNews);
+        rvTopNews = viewGroup.findViewById(R.id.rvTopNews);
         rvTopNews.setHasFixedSize(true);
 
+        Loading.showLoading(getActivity());
         NewsApi.topHeadlinesByCountry(getActivity(), "us", new NewsApi.Response() {
             @Override
             public void onSuccess(Form form) {
-                LinearLayoutManager linearLayoutManager = new  LinearLayoutManager(getActivity());
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                TopNewsAdapter topNewsAdapter = new TopNewsAdapter(getActivity(),form.getArticles());
+                TopNewsAdapter topNewsAdapter = new TopNewsAdapter(getActivity(), form.getArticles());
                 rvTopNews.setAdapter(topNewsAdapter);
                 rvTopNews.setLayoutManager(linearLayoutManager);
+                Loading.cancelLoading();
             }
 
             @Override
             public void onFailed(Form form) {
-
+                onError(getActivity(), form.getErrDesc());
+                Loading.cancelLoading();
             }
         });
 
@@ -83,8 +86,8 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onSuccess(Form form) {
                 ArrayList<String> listCategory = new ArrayList<>();
-                for(Source s: form.getSources()){
-                   listCategory.add(s.getCategory());
+                for (Source s : form.getSources()) {
+                    listCategory.add(s.getCategory());
                 }
                 listCategory = CommonUtil.distinctListString(listCategory);
                 renderToView(viewGroup, listCategory);
@@ -93,23 +96,24 @@ public class NewsFragment extends BaseFragment {
 
             @Override
             public void onFailed(Form form) {
+                onError(getActivity(), form.getErrDesc());
                 Loading.cancelLoading();
             }
         });
     }
 
     private void renderToView(ViewGroup viewGroup, ArrayList<String> listCategory) {
-        TagLayout tagLayout =  viewGroup.findViewById(R.id.tagLayout);
+        TagLayout tagLayout = viewGroup.findViewById(R.id.tagLayout);
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
         for (String s : listCategory) {
             View tagView = layoutInflater.inflate(R.layout.adapter_category_item, null, false);
-            TextView tagTextView =  tagView.findViewById(R.id.tvCategoryItem);
+            TextView tagTextView = tagView.findViewById(R.id.tvCategoryItem);
             tagTextView.setText(s);
             tagView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TextView tagTextView =  view.findViewById(R.id.tvCategoryItem);
+                    TextView tagTextView = view.findViewById(R.id.tvCategoryItem);
                     Intent intent = new Intent(getActivity(), SourceActivity.class);
                     intent.putExtra("category", tagTextView.getText());
                     startActivity(intent);

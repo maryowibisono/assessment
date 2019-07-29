@@ -1,21 +1,19 @@
 package com.maryow.assessment.activity.news;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
-
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
 import com.maryow.assessment.component.Loading;
+import com.maryow.assessment.view.news.NewsDetail;
 
-public class NewsDetailActivity extends BaseActivity {
+public class NewsDetailActivity extends BaseActivity<NewsDetail> {
 
-    WebView wvNewsDetail;
-    ImageButton  ibtnBack;
+    @Override
+    public NewsDetail setViewHolder(View parent) {
+        return new NewsDetail(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -23,9 +21,8 @@ public class NewsDetailActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        ibtnBack = findViewById(R.id.ibtnBack);
-        ibtnBack.setOnClickListener(new View.OnClickListener() {
+    protected void onPrepare(NewsDetail holder) {
+        holder.ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -33,22 +30,22 @@ public class NewsDetailActivity extends BaseActivity {
         });
 
         Loading.showLoading(this);
-        wvNewsDetail =  findViewById(R.id.wvNewsDetail);
-        wvNewsDetail.getSettings().setJavaScriptEnabled(true);
-        wvNewsDetail.setWebViewClient(new WebViewClient(){
+        holder.wvNewsDetail =  findViewById(R.id.wvNewsDetail);
+        holder.wvNewsDetail.getSettings().setJavaScriptEnabled(true);
+        holder.wvNewsDetail.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
                 Loading.cancelLoading();
             }
         });
         String url = getIntent().getStringExtra("url");
-        wvNewsDetail.loadUrl(url);
+        holder.wvNewsDetail.loadUrl(url);
     }
 
     @Override
     public void onBackPressed() {
-        if(wvNewsDetail.canGoBack()){
-            wvNewsDetail.goBack();
+        if(viewHolder.wvNewsDetail.canGoBack()){
+            viewHolder.wvNewsDetail.goBack();
         }else{
             super.onBackPressed();
         }

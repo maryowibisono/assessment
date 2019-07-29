@@ -2,12 +2,9 @@ package com.maryow.assessment.activity.news;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,13 +13,19 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.maryow.assessment.R;
 import com.maryow.assessment.activity.BaseActivity;
+import com.maryow.assessment.activity.movie.MovieActivity;
 import com.maryow.assessment.common.Config;
 import com.maryow.assessment.fragment.HomeFragment;
 import com.maryow.assessment.fragment.MovieFragment;
 import com.maryow.assessment.fragment.NewsFragment;
+import com.maryow.assessment.view.news.MainView;
 
-public class MainActivity extends BaseActivity {
-    BottomNavigationView bottomNavigationView;
+public class MainActivity extends BaseActivity<MainView> {
+
+    @Override
+    public MainView setViewHolder(View parent) {
+        return new MainView(parent);
+    }
 
     @Override
     protected int initLayout() {
@@ -30,40 +33,30 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPrepare() {
-        bottomViewAction();
-
+    protected void onPrepare(MainView holder) {
+        bottomNavigationAction(holder);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    private void bottomViewAction() {
-        bottomNavigationView = findViewById(R.id.bnNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_news);
-        changeFragment(new NewsFragment());
-
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private void bottomNavigationAction(final MainView holder) {
+        holder.bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        changeFragment(new HomeFragment());
+        holder.bottomNavigationView.setVisibility(View.GONE);
+        holder.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_news : {
+                switch (item.getItemId()) {
+                    case R.id.nav_news: {
+                        holder.bottomNavigationView.setVisibility(View.VISIBLE);
                         changeFragment(new NewsFragment());
                         return true;
                     }
-                    case R.id.nav_home : {
+                    case R.id.nav_home: {
+                        holder.bottomNavigationView.setVisibility(View.GONE);
                         changeFragment(new HomeFragment());
                         return true;
                     }
-                    case R.id.nav_movie : {
+                    case R.id.nav_movie: {
+                        holder.bottomNavigationView.setVisibility(View.VISIBLE);
                         changeFragment(new MovieFragment());
                         return true;
                     }
@@ -71,6 +64,21 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    public void goToFragment(int menu) {
+        switch (menu) {
+            case R.id.nav_news: {
+                viewHolder.bottomNavigationView.setVisibility(View.VISIBLE);
+                changeFragment(new NewsFragment());
+                break;
+            }
+            case R.id.nav_movie: {
+                viewHolder.bottomNavigationView.setVisibility(View.VISIBLE);
+                changeFragment(new MovieFragment());
+                break;
+            }
+        }
     }
 
     private void changeFragment(Fragment fragment) {
@@ -81,16 +89,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode){
-            case Config.REQ_CODE_SEARCH : {
-                if (resultCode == Activity.RESULT_OK){
+        switch (requestCode) {
+            case Config.REQ_CODE_SEARCH: {
+                if (resultCode == Activity.RESULT_OK) {
                     Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                     intent.putExtra("query", data.getStringExtra("query"));
                     startActivity(intent);
                 }
+                break;
             }
-            default:{
+            case Config.REQ_CODE_MOVIE_SEARCH: {
+                if (resultCode == Activity.RESULT_OK) {
+                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
+                    intent.putExtra("query", data.getStringExtra("query"));
+                    startActivity(intent);
+                }
+                break;
+            }
+            default: {
                 super.onActivityResult(requestCode, resultCode, data);
+                break;
             }
         }
 

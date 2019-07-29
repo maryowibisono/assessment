@@ -8,4 +8,5 @@ public class Config {
     public static final String MOVIE_API_KEY = "0dbc3093a34917a52650d8ae209a7f23";
     public static final String MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
     public static final int REQ_CODE_SEARCH = 7117;
+    public static final int REQ_CODE_MOVIE_SEARCH = 2324;
 }

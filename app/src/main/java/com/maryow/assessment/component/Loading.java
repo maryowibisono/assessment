@@ -32,7 +32,7 @@ public class Loading {
         cancelLoading();
         progressTimer(iLoadingListener, idleTime);
         progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle((CharSequence)null);
+        progressDialog.setTitle((CharSequence) null);
         progressDialog.setMessage(message);
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -43,23 +43,23 @@ public class Loading {
         TimerTask var2 = new TimerTask() {
             public void run() {
                 Loading.cancelLoading();
-                if(iLoadingListener != null) {
+                if (iLoadingListener != null) {
                     iLoadingListener.onTimerOut();
                 }
 
             }
         };
-        timer.schedule(var2, (long)idleTime);
+        timer.schedule(var2, (long) idleTime);
     }
 
     public static void cancelLoading() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
 
         try {
-            if(progressDialog != null) {
+            if (progressDialog != null) {
                 progressDialog.cancel();
                 progressDialog = null;
             }
