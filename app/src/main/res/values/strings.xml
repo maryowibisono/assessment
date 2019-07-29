@@ -4,8 +4,8 @@
     <string name="bottom_nav_news">news</string>
     <string name="bottom_nav_home">home</string>
     <string name="bottom_nav_movie">movie</string>
-    <string name="placeholder_search">Search News ...</string>
-    <string name="placeholder_search_movie">Search Movie ...</string>
+    <string name="placeholder_search">Search News</string>
+    <string name="placeholder_search_movie">Search Movie</string>
     <string name="loading">Loading..</string>
 
 
