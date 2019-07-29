@@ -83,7 +83,7 @@
 
         <LinearLayout
             android:id="@+id/llEmptyNews"
-            android:layout_width="300dp"
+            android:layout_width="320dp"
             android:layout_height="300dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
@@ -103,19 +103,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="EMPTY NEWS"
+                android:text="No results"
                 android:textAlignment="center"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/colorGreyDark"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="All Your news will appear here, once available on our server"
+                android:text="We couldn't find anything matching your search. \n Try searching other keywords"
                 android:textAlignment="center"
                 android:textSize="14dp" />
 
