@@ -11,14 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.movie.SearchMovieActivity"></activity>
-        <activity android:name=".activity.movie.MovieReviewActivity" />
-        <activity android:name=".activity.movie.MovieDetailActivity" />
-        <activity android:name=".activity.movie.MovieActivity" />
-        <activity android:name=".activity.news.SearchActivity" />
-        <activity android:name=".activity.news.NewsDetailActivity" />
-        <activity android:name=".activity.news.NewsActivity" />
-        <activity android:name=".activity.news.SourceActivity" />
+        <activity
+            android:name=".activity.movie.SearchMovieActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.movie.MovieReviewActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.movie.MovieDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.movie.MovieActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.news.SearchActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.news.NewsDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.news.NewsActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.news.SourceActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.news.SplashScreenActivity"
             android:screenOrientation="portrait"
